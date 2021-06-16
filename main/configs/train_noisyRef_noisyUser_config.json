@@ -1,0 +1,34 @@
+{
+    "seed":12345,
+    "entropy_const": 0.1,
+    "learning_rate": 1e-3,
+    "num_episodes": 50,
+    "num_rollouts": 20,
+    "num_epochs": 10,
+    "ref_prediction": true,
+    "real_user": true,
+    "fractional_reward": false,
+    "negative_reward": true,
+    "observation_spec_shape_x": 1001,
+    "observation_spec_shape_y": 769,
+    
+    "checkpoint_path": "../data/checkpoints/main_exp/noisyUser-noisyRefPred",
+
+    "starts_per_question": "../data/train_data/reachable_startpoints_propagated_trainset.json",
+    "question_list": "../data/train_data/questionId_list_trainset.json",
+    "paths": "../data/train_data/contextPaths_trainset.json",
+    "answers": "../data/train_data/all_answers_trainset.json",
+    "questions": "../data/train_data/all_questions_trainset.json",
+    "action_nbrs": "../data/train_data/action_numbers_trainset.json",
+    "next_questions": "../data/train_data/next_questions_trainset.json",
+    "next_reformulations": "../data/train_data/next_reformulations_real_trainset.json",
+    "q_start_indices": "../data/train_data/question_start_indices_trainset.json",
+    "next_info_predictions":"../data/train_data/next_info_predictions_trainset.json",
+    "ref_predictions":"../data/train_data/ref_real_predictions_trainset.json",
+   
+    "encoded_questions": "../data/train_data/encoded_questions_trainset.pickle",
+    "encoded_actions": "../data/train_data/encoded_paths_trainset.pickle"
+    
+}
+
+

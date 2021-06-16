@@ -1,0 +1,22 @@
+{
+    "seed":12345,
+    "nbr_sample_actions": 5,
+    "observation_spec_shape_x": 1001,
+    "observation_spec_shape_y": 769,
+    
+    "filename": "../data/results/main_exp/test/idealUser-idealRefPred-oldConvRef",
+    "checkpoint_path": "../data/checkpoints/main_exp/idealUser-idealRefPred",
+    "checkpoint_nbr" : 10,
+
+    "startpoints": "../data/test_data/startPoints_testset.json",
+    "contextPaths": "../data/test_data/contextPaths_testset.json",
+    "labels_dict": "../data/labels_dict.json",
+
+    "bert_questions": "../data/test_data/encoded_questions_testset.pickle",
+    "bert_actions": "../data/test_data/encoded_paths_testset.pickle",
+    "action_nbrs": "../data/test_data/action_numbers_testset.json"
+
+    
+}
+
+
