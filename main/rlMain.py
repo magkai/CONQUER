@@ -60,7 +60,7 @@ else:
 if "negative_reward" in config.keys():
   alt_reward = config["negative_reward"]
 else: 
-  alt_reward = False
+  alt_reward = True
 
 #reinforce requires a BoundedArrayspec, selected actions are numeric values sampled from categorical distribution
 action_spec = array_spec.BoundedArraySpec(shape=(), dtype=np.int32, minimum=0, maximum=999, name='action')

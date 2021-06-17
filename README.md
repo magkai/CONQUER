@@ -1,4 +1,4 @@
-CONQUER: Reinforcement Learning from Reformulations for Conversational QA over KGs
+CONQUER: Reinforcement Learning from Reformulations in Conversational QA over KGs
 ============
 
 Description
@@ -8,13 +8,21 @@ This repository contains the code and data for our SIGIR'21 full paper. In this 
 The answering process is modeled as multiple agents walking in parallel on the knowledge graph: 
 
 ![](kg_graph.png)
+
 *KG excerpt required for answering "When was Avengers: Endgame released in Germany?" and "What was the next from Marvel?".
 Agents are shown with possible walk directions. The colored box ("Spider-man: Far from Home") is the correct answer.*
 
-For more details see our paper:
+For more details see our paper: [Reinforcement Learning from Reformulations in Conversational Question Answering over Knowledge Graphs](https://arxiv.org/abs/2105.04850)
 
-[Reinforcement Learning from Reformulations in Conversational Question Answering over Knowledge Graphs](https://arxiv.org/abs/2105.04850), Magdalena Kaiser, Rishiraj Saha Roy and Gerhard Weikum, in Proceedings of the 44th International ACM SIGIR Conference on Research and Development in Information Retrieval 2021 (SIGIR '21), Virtual Event, Canada, 11 - 15 July 2021 (to appear).
-
+If you use this code, please cite:
+```bibtex
+@inproceedings{kaiser2021reinforcement,
+  title={Reinforcement Learning from Reformulations in Conversational Question Answering over Knowledge Graphs},
+  author = {Kaiser, Magdalena and Saha Roy, Rishiraj and Weikum, Gerhard},
+  booktitle={SIGIR},
+  year={2021}
+ }
+```
 
 Setup 
 ------
@@ -37,25 +45,23 @@ The following software is required:
 
 To install the required libraries, it is recommended to create a virtual environment:
 
-        python3 -m venv ENV_conquer
-        source ENV_conquer/bin/activate
-        pip install -r requirements.txt
+    python3 -m venv ENV_conquer
+    source ENV_conquer/bin/activate
+    pip install -r requirements.txt
 
 
 Data
 ------
-The benchmark and all required intermediate data can be downloaded from here (put it in the root of the cloned github repo):
+The benchmark and all required intermediate data can be downloaded from here (unzip and put it in the root folder of the cloned github repo): https://conquer.mpi-inf.mpg.de/static/data.zip 
 
-        wget https://conquer.mpi-inf.mpg.de/static/data.zip -O data.zip
-        unzip data.zip
         
 
 Training CONQUER
 ------
 Execute in the `main` directory:
 
-        source ENV_conquer/bin/activate
-        python rlMain.py configs/train_REFTYPE_USERTYPE_config.json
+    source ENV_conquer/bin/activate
+    python rlMain.py configs/train_REFTYPE_USERTYPE_config.json
 
 where REFTYPE can be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor 
 and USERTYPE can be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively
@@ -67,12 +73,11 @@ Evaluating CONQUER
 ------
 Execute in the `main` directory:
 
-        source ENV_conquer/bin/activate
-        python rlEval.py configs/eval_REFTYPE_USERTYPE_EVALTYPE_config.json
+    source ENV_conquer/bin/activate
+    python rlEval.py configs/eval_REFTYPE_USERTYPE_EVALTYPE_config.json
 
-where REFTYPE can be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor 
-and USERTYPE can be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively
-and EVALTYPE can be *test* or *dev* to use the ConvRef test or devset.
+where REFTYPE can be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor, USERTYPE can be *idealUser* or *noisyUser* to apply the ideal/noisy user model
+and EVALTYPE can be *test* or *dev* to use the ConvRef test or devset respectively.
 
 Training & Evaluating Reformulation Predictor
 -------
@@ -82,7 +87,8 @@ More details coming soon
 Running Context Entity Detection
 ------
 We use ELQ as our NED tool. To make use of it, clone the following repo:
-       git clone https://github.com/facebookresearch/BLINK.git
+
+    git clone https://github.com/facebookresearch/BLINK.git
 
 and perform the setup steps described here: https://github.com/facebookresearch/BLINK/tree/master/elq
 
