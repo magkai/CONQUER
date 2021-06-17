@@ -4,6 +4,8 @@ from __future__ import print_function
 import json
 import sys
 
+"""CONQUER main training file"""
+
 #Set seed values everywhere to make results reproducible
 with open(sys.argv[1], "r") as config_file:
   config = json.load(config_file)

@@ -6,6 +6,9 @@ from __future__ import print_function
 import sys
 import json
 
+"""CONQUER main evaluation file"""
+
+
 with open(sys.argv[1], "r") as config_file:
   config = json.load(config_file)
 # Set a seed value

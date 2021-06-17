@@ -43,6 +43,8 @@ The following software is required:
 
 * Neo4j 1.7.2
 
+* Scikit-learn 0.21.2
+
 To install the required libraries, it is recommended to create a virtual environment:
 
     python3 -m venv ENV_conquer
@@ -60,7 +62,6 @@ Training CONQUER
 ------
 Execute in the `main` directory:
 
-    source ENV_conquer/bin/activate
     python rlMain.py configs/train_REFTYPE_USERTYPE_config.json
 
 where REFTYPE can be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor 
@@ -73,7 +74,6 @@ Evaluating CONQUER
 ------
 Execute in the `main` directory:
 
-    source ENV_conquer/bin/activate
     python rlEval.py configs/eval_REFTYPE_USERTYPE_EVALTYPE_config.json
 
 where REFTYPE can be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor, USERTYPE can be *idealUser* or *noisyUser* to apply the ideal/noisy user model
@@ -81,8 +81,24 @@ and EVALTYPE can be *test* or *dev* to use the ConvRef test or devset respective
 
 Training & Evaluating Reformulation Predictor
 -------
-More details coming soon
+Execute in the `reformulation_prediction` directory:
 
+1. Create the datasets for fine-tuning BERT:
+
+```python
+python createRefDataset.py 
+```
+
+2. Train reformulation predictor (fine-tune BERT model):
+
+```
+python finetuneRefPredictor.py
+```
+
+3. Evaluate performance of reformulation predictor:
+```
+python refPredictEval.py
+```
 
 Running Context Entity Detection
 ------
