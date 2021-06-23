@@ -86,35 +86,86 @@ Execute in the `reformulation_prediction` directory:
 1. Create the datasets for fine-tuning BERT:
 
 ```python
-python createRefDataset.py 
+   python createRefDataset.py 
 ```
 
-2. Train reformulation predictor (fine-tune BERT model):
+2. Train the reformulation predictor (fine-tune BERT model):
 
 ```
-python finetuneRefPredictor.py
+   python finetuneRefPredictor.py
 ```
 
-3. Evaluate performance of reformulation predictor:
+3. Evaluate the performance of the reformulation predictor:
 ```
-python refPredictEval.py
+   python refPredictEval.py
 ```
 
-Running Context Entity Detection
+OPTIONAL: Running Context Entity Detection
 ------
-We use ELQ as our NED tool. To make use of it, clone the following repo:
+The context entities (= startpoints for the RL walk) along with their respective KG paths (= actions) have been pre-computed and can directly be used (see **Data** section above) for the RL. In case you want to re-run the context entity detection, the following is required:
 
-    git clone https://github.com/facebookresearch/BLINK.git
+1. We use ELQ as our NED tool. To make use of it, clone the following repo:
+```
+   git clone https://github.com/facebookresearch/BLINK.git
+```  
+   Place the BLINK directory inside the root directory of CONQUER and perform the setup steps described here: https://github.com/facebookresearch/BLINK/tree/master/elq
 
-and perform the setup steps described here: https://github.com/facebookresearch/BLINK/tree/master/elq
 
-More details coming soon
+2. Access to our KG, which has been loaded into a neo4j database, is required. Our neo4j database can be downloaded here: https://conquer.mpi-inf.mpg.de/static/neo4j.zip.
 
-Running Data Preprocessing Steps
+   Alternatively, you can build it from scratch (see **Running KG Preparation Steps** below).
+
+   Note that the provided version is for Linux. 
+The unzipped version requires around 65 GB of disk space and around 35 GB of RAM is necessary to run the database.
+
+   Start the database with the following command:
+
+```
+   neo4j-community-4.0.5/bin/neo4j start
+```
+
+3. Once the database is running, execute the following command in the `context_entity_detection` directory:
+
+```
+   python contextEntityRetrieval.py
+```
+
+OPTIONAL: Running Data Preprocessing Steps
 ------
-More details coming soon
+We provide the preprocessed data (see above) for easy usage. In case you want to build it from scratch, the following steps are necessary:
 
-Running KG Preparation Steps
+Execute in the `data_preprocessing` directory:
+
+1. Process the benchmark data:
+
+```python
+   python processConvRefData.py 
+```
+2. Encode questions and actions with BERT:
+
+```python
+   python doBertEncoding.py
+```
+
+3. Encode the conversation history (in case you want to include it):
+
+```python
+   python encodeConversationHistory.py 
+```
+
+4. Make best use of the retrieved context entities (for training only):
+
+```python
+   python prepareStartPoints.py 
+```
+
+5. Pre-compute reformulation predictions (for training only):
+
+```python
+   python precomputeRefPredictions.py 
+```
+
+OPTIONAL: Running KG Preparation Steps
 ------
 
 More details coming soon
