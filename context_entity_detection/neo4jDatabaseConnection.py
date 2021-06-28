@@ -4,12 +4,15 @@ import random
 
 random.seed(7)
 
+#fill in your neo4j password here:
+NEO4J_PASSWORD="YOUR_PASSWORD"
+
 """Access to our neo4j KG database"""
 
 class KGENVIRONMENT:
     def __init__(self):
         self.uri =  "bolt://127.0.0.1:7687"
-        self.driver = GraphDatabase.driver(self.uri, auth=("neo4j", "admin"), encrypted=False,  max_connection_lifetime=3600*24*30, keep_alive=True)
+        self.driver = GraphDatabase.driver(self.uri, auth=("neo4j", NEO4J_PASSWORD), encrypted=False,  max_connection_lifetime=3600*24*30, keep_alive=True)
         with self.driver.session() as session:
             result = session.read_transaction(self.__startKG)
         

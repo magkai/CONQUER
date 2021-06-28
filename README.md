@@ -64,10 +64,10 @@ Execute in the `main` directory:
 
     python rlMain.py configs/train_REFTYPE_USERTYPE_config.json
 
-where REFTYPE can be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor 
-and USERTYPE can be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively
+where ``REFTYPE`` can either be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor 
+and ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively
 
-Further details about the config parameters can be found in the `configs` folder. 
+Further details about the config parameters can be found in `main/configs`. 
 The provided config files use the pre-computed data (downloaded at the previous step). For creating the required data from scratch see **Running Data Preprocessing Steps** below.
 
 Evaluating CONQUER
@@ -76,8 +76,8 @@ Execute in the `main` directory:
 
     python rlEval.py configs/eval_REFTYPE_USERTYPE_EVALTYPE_config.json
 
-where REFTYPE can be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor, USERTYPE can be *idealUser* or *noisyUser* to apply the ideal/noisy user model
-and EVALTYPE can be *test* or *dev* to use the ConvRef test or devset respectively.
+where ``REFTYPE`` can either be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor, ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model
+and ``EVALTYPE`` can be *test* or *dev* to use the ConvRef test or devset respectively.
 
 Training & Evaluating Reformulation Predictor
 -------
@@ -100,6 +100,41 @@ Execute in the `reformulation_prediction` directory:
    python refPredictEval.py
 ```
 
+OPTIONAL: Running the Neo4j Database
+------
+For running the **Context Entity Detection** (see next step), we need to access our KG that we loaded into a Neo4j database. 
+This database can be set up in the following way:
+1. For using neo4j, JDK 11 or higher is required and can be downloaded from here: https://jdk.java.net/.
+
+2. We used the neo4j-community-4.0.5 version in our experiments. The latest versions of neo4j can be downloaded from here: https://neo4j.com/download-center/#community
+
+3. We are using the *apoc* library that provides additional functionality to neo4j. In newer versions of neo4j you can find the respective jar file inside the ``labs`` folder of the downloaded neo4j directory. Otherwise, you can download a compatible version here: https://neo4j.com/labs/apoc/4.1/installation/.
+Move the apoc jar file (from ``labs``) to ``plugins`` and include the following line in ``configs/neo4j.conf``: ``dbms.security.procedures.unrestricted=apoc.*`` to be able to use the library. 
+
+4. Load the CONQUER KG representation into the neo4j database. 
+
+   a) You can find the required KG dumps here:  https://conquer.mpi-inf.mpg.de/static/dumps.zip. Unzip and put them into the ``data`` folder. Alternatively, you can build our KG representation from scratch (see **Running KG Preparation Steps** below).
+
+   b) Execute in the ``kg_processing`` directory:
+```
+   bash loadKGIntoNeo4j.sh
+```
+The final database requires around 65 GB of disk space and around 30 GB of RAM is necessary to run the database.
+
+5.  The database can be started with the following command:
+
+```
+   $NEO4J_HOME/bin/neo4j start
+```
+where $NEO4J_HOME is the path to the downloaded neo4j directory.
+
+6. You need to change the default password:
+
+```
+   $NEO4J_HOME/bin/cypher-shell
+```
+and type in the defaults: *user: neo4j*, *password: neo4j*, then you are prompted to type in a new password. Restart the database (`` $NEO4J_HOME/bin/neo4j stop`` and then again `` $NEO4J_HOME/bin/neo4j start``).
+
 OPTIONAL: Running Context Entity Detection
 ------
 The context entities (= startpoints for the RL walk) along with their respective KG paths (= actions) have been pre-computed and can directly be used (see **Data** section above) for the RL. In case you want to re-run the context entity detection, the following is required:
@@ -111,22 +146,13 @@ The context entities (= startpoints for the RL walk) along with their respective
    Place the BLINK directory inside the root directory of CONQUER and perform the setup steps described here: https://github.com/facebookresearch/BLINK/tree/master/elq
 
 
-2. Access to our KG, which has been loaded into a neo4j database, is required. Our neo4j database can be downloaded here: https://conquer.mpi-inf.mpg.de/static/neo4j.zip.
+2. Access to our KG, which has been loaded into a neo4j database, is required. 
+Perform the steps described in **Running the Neo4j Database** above for this.
 
-   Alternatively, you can build it from scratch (see **Running KG Preparation Steps** below).
-
-   Note that the provided version is for Linux. 
-The unzipped version requires around 65 GB of disk space and around 35 GB of RAM is necessary to run the database.
-
-   Start the database with the following command:
+3. Once the database is running, execute the following commands in the `context_entity_detection` directory:
 
 ```
-   neo4j-community-4.0.5/bin/neo4j start
-```
-
-3. Once the database is running, execute the following command in the `context_entity_detection` directory:
-
-```
+   mkdir models/
    python contextEntityRetrieval.py
 ```
 
@@ -168,6 +194,24 @@ Execute in the `data_preprocessing` directory:
 OPTIONAL: Running KG Preparation Steps
 ------
 
-More details coming soon
+1. In this project, we use Wikidata as our Knowledge Graph. You can download the most recent wikidata dump here (around 2 TB): https://dumps.wikimedia.org/wikidatawiki/entities/
 
+2. Our goal was to make the dump most suitable for QA by performing a sequence of filtering steps, which results in a much smaller dump (around 42 GB). 
+Our wikidata processing pipeline is located in a separate project. Clone it into the ``kg_processing`` directory of CONQUER:
+```
+   git clone https://github.com/PhilippChr/wikidata-core-for-QA.git
+```
+
+   and execute inside the ``wikidata-core-for-QA`` directory:
+```
+   bash prepare_wikidata_for_qa.sh <wikidata_dump_path> <number_of_workers>
+```
+   where ``wikidata_dump_path`` is the location of the downloaded Wikidata dump and ``number_of_workers`` specifies the number of processes that should run in parallel.
+
+3. In order to get the CONQUER specific KG representations (where the qualifier information is added to the paths of the main fact and vice versa), execute inside the ``kg_processing`` directory:
+```
+   bash createQualifierDumpRepresentation.sh
+```
+
+4. Finally, we need to load the CONQUER KG into the neo4j database for later access as described in **Running the Neo4j Database** above.
 
