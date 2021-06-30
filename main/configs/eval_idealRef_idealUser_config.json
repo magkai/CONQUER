@@ -3,9 +3,9 @@
     "nbr_sample_actions": 5,
     "observation_spec_shape_x": 1001,
     "observation_spec_shape_y": 769,
-
-    "filename": "../data/results/main_exp/test/idealUser-noisyRefPred",
-    "checkpoint_path": "../data/checkpoints/main_exp/idealUser-noisyRefPred",
+    
+    "filename": "../data/results/main_exp/idealUser-idealRefPred",
+    "checkpoint_path": "../data/checkpoints/main_exp/idealUser-idealRefPred",
     "checkpoint_nbr" : 10,
 
     "startpoints": "../data/test_data/startPoints_testset.json",

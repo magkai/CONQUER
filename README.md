@@ -7,7 +7,8 @@ Description
 This repository contains the code and data for our SIGIR'21 full paper. In this paper, we present CONQUER, a reinforcement learning model that can learn from a conversational stream of questions and reformulations. A reformulation is likely to be triggered by an incorrect system response, whereas a new follow-up question could be a positive signal on the previous turn’s answer. CONQUER is trained via noisy rewards coming from the reformulation likelihoods.
 The answering process is modeled as multiple agents walking in parallel on the knowledge graph: 
 
-![](kg_graph.png)
+<center><img src="kg_graph.png"  alt="kg_graph" width=80%  /></center>
+
 
 *KG excerpt required for answering "When was Avengers: Endgame released in Germany?" and "What was the next from Marvel?".
 Agents are shown with possible walk directions. The colored box ("Spider-man: Far from Home") is the correct answer.*
@@ -68,22 +69,34 @@ where ``REFTYPE`` can either be *idealRef* or *noisyRef* to select the ideal/noi
 and ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively
 
 Further details about the config parameters can be found in `main/configs`. 
-The provided config files use the pre-computed data (downloaded at the previous step). For creating the required data from scratch see **Running Data Preprocessing Steps** below.
+The provided config files use the pre-computed data (downloaded at the previous step). For creating the required data from scratch see **Running Data Preprocessing Steps** below. We also included the trained models for our main experiments in the provided data folder.
 
 Evaluating CONQUER
 ------
 Execute in the `main` directory:
 
-    python rlEval.py configs/eval_REFTYPE_USERTYPE_EVALTYPE_config.json
+    python rlEval.py configs/eval_REFTYPE_USERTYPE_config.json
 
-where ``REFTYPE`` can either be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor, ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model
-and ``EVALTYPE`` can be *test* or *dev* to use the ConvRef test or devset respectively.
+where ``REFTYPE`` can either be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor, ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively.
+
+The produced output file consists of the following elements:
+```
+CONV_ID,QUESTION,ANSWER,GOLD_ANSWER,PRECISION@1, HITS@5, MRR
+```
+where ``CONV_ID`` is the respective id of the question in the dataset, followed by the user question, the system answer, the gold labeled answers from the dataset (small answer set, typicially one) and the three metrics P@1, Hits@5 and MRR. 
+The question id is formated in the following way ``X-Y-Z``, where ``X`` is the number of the conversation, ``Y`` is the turn number and ``Z`` is the reformulation number (only present in case of a reformulation).
+Here is an example output line: 
+```
+8961-0,What is the name of the writer of The Secret Garden?,Q276028,['Q276028'],1.0,1.0,1.0
+```
+At the end of the file, a summary with the average results on the three metrics, as well as further stats like the 
+*total number of reformulations triggered* and the *number of questions answered correctly on the ith attempt* is provided.
 
 Training & Evaluating Reformulation Predictor
 -------
 Execute in the `reformulation_prediction` directory:
 
-1. Create the datasets for fine-tuning BERT:
+1. The required data for fine-tuning BERT for reformulation prediction is part of the provided data folder (see download above). Alternatively, it can be created with the following script:
 
 ```python
    python createRefDataset.py 
@@ -94,11 +107,19 @@ Execute in the `reformulation_prediction` directory:
 ```
    python finetuneRefPredictor.py
 ```
+Note that we also provide the fine-tuned models in the data folder. 
 
 3. Evaluate the performance of the reformulation predictor:
 ```
    python refPredictEval.py
 ```
+The evaluation output consists of the following metrics:
+```
+loss, accuracy, f1, precision, recall
+f1_0_labels, precision_0_labels, recall_0_labels
+f1_1_labels, precision_1_labels, recall_1_labels
+```
+where ``0_labels`` refers to the classification of different information needs and ``1_labels`` to the classification of reformulations.
 
 OPTIONAL: Running the Neo4j Database
 ------
