@@ -3,7 +3,7 @@ import json
 
 DUMP_SPECIFICATION = "wikidata_clean"
 #pre-processed wikidata dump
-PATH_TO_WIKIDATA_DUMP = "/GW/qa/work/data/wikidata_clean_up/dumps/cleaned_dump.csv"#"wikidata-core-for-qa/dumps/" + DUMP_SPECIFICATION + ".csv"
+PATH_TO_WIKIDATA_DUMP = "wikidata-core-for-qa/dumps/" + DUMP_SPECIFICATION + ".csv"
 PATH_TO_WIKIDATA_NODES = "../data/dumps/nodes.csv"
 
 
