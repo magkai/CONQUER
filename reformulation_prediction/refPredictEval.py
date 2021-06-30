@@ -87,4 +87,5 @@ trainer = TFTrainer(
     compute_metrics=compute_metrics
 )
 
-trainer.evaluate()
+metrics = trainer.evaluate()
+print("Result: ", metrics)

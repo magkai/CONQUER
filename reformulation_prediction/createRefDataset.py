@@ -6,10 +6,13 @@ import random
 
 """Create the training data for fine-tuning BERT"""
 
-#ConvRef devset is used for creating train dataset
-#evaluation done on ConvRef test, create test set analogously
+#ConvRef devset is used for creating training dataset for reformulation prediction
+#evaluation done on the ConvRef testset
 with open("../data/ConvRef/ConvRef_devset.json") as json_file:
     dev_data = json.load(json_file)
+
+with open("../data/ConvRef/ConvRef_testset.json") as json_file:
+    test_data = json.load(json_file)
 
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
@@ -72,27 +75,44 @@ def getSecondQuestion(refPairs):
         second.append(pair["q2"]) 
     return second
 
-#create reformulation pairs
-refPairs = create_Pairs(dev_data)
-random.seed(4)
-random.shuffle(refPairs)
-#get first/second question in pair
-firstQuestions = getFirstQuestion(refPairs)
-secondQuestions = getSecondQuestion(refPairs)
+def processData(data):
+    #create reformulation pairs
+    refPairs = create_Pairs(data)
+    random.seed(4)
+    random.shuffle(refPairs)
+    #get first/second question in pair
+    firstQuestions = getFirstQuestion(refPairs)
+    secondQuestions = getSecondQuestion(refPairs)
+    #get tokenized input to BERT
+    encodings = tokenizer(firstQuestions, secondQuestions, padding=True, truncation=True, return_tensors="tf")
+    labels = getLabelList(refPairs)
+    return encodings, labels, firstQuestions, secondQuestions
 
-#get tokenized input to BERT
-encodings = tokenizer(firstQuestions, secondQuestions, padding=True, truncation=True, return_tensors="tf")
-labels = getLabelList(refPairs)
-
+dev_encodings, dev_labels, dev_firstQuestions, dev_secondQuestions = processData(dev_data)
+test_encodings, test_labels, test_firstQuestions, test_secondQuestions = processData(test_data)
 
 with open("../data/ref_prediction/dev_firstQuestions", "w") as dev_file:
-   json.dump(firstQuestions, dev_file)
+   json.dump(dev_firstQuestions, dev_file)
 
 with open("../data/ref_prediction/dev_secondQuestions", "w") as dev_file:
-   json.dump(secondQuestions, dev_file)
+   json.dump(dev_secondQuestions, dev_file)
 
 with open("../data/ref_prediction/dev_labels", "w") as dev_file:
-    json.dump(labels, dev_file)
+    json.dump(dev_labels, dev_file)
 
 with open("../data/ref_prediction/dev_encodings", "wb") as dev_file:
-    pickle.dump(encodings, dev_file)
+    pickle.dump(dev_encodings, dev_file)
+
+with open("../data/ref_prediction/test_firstQuestions", "w") as dev_file:
+   json.dump(test_firstQuestions, dev_file)
+
+with open("../data/ref_prediction/test_secondQuestions", "w") as dev_file:
+   json.dump(test_secondQuestions, dev_file)
+
+with open("../data/ref_prediction/test_labels", "w") as dev_file:
+    json.dump(test_labels, dev_file)
+
+with open("../data/ref_prediction/test_encodings", "wb") as dev_file:
+    pickle.dump(test_encodings, dev_file)
+
+print("Successfully created datasets for reformulation prediction")
