@@ -13,7 +13,7 @@ The answering process is modeled as multiple agents walking in parallel on the k
 *KG excerpt required for answering "When was Avengers: Endgame released in Germany?" and "What was the next from Marvel?".
 Agents are shown with possible walk directions. The colored box ("Spider-man: Far from Home") is the correct answer.*
 
-For more details see our paper: [Reinforcement Learning from Reformulations in Conversational Question Answering over Knowledge Graphs](https://arxiv.org/abs/2105.04850)
+For more details see our paper: [Reinforcement Learning from Reformulations in Conversational Question Answering over Knowledge Graphs](https://arxiv.org/abs/2105.04850) and visit our project website: https://conquer.mpi-inf.mpg.de.
 
 If you use this code, please cite:
 ```bibtex
@@ -55,7 +55,7 @@ To install the required libraries, it is recommended to create a virtual environ
 
 Data
 ------
-The benchmark and all required intermediate data can be downloaded from here (unzip and put it in the root folder of the cloned github repo): https://conquer.mpi-inf.mpg.de/static/data.zip 
+The benchmark, all required intermediate data and our main results can be downloaded from here (unzip and put it in the root folder of the cloned github repo, around 11 GB required): https://conquer.mpi-inf.mpg.de/static/data.zip 
 
         
 
@@ -66,10 +66,10 @@ Execute in the `main` directory:
     python rlMain.py configs/train_REFTYPE_USERTYPE_config.json
 
 where ``REFTYPE`` can either be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor 
-and ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively
+and ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively. For example: ``python rlMain.py configs/train_idealRef_noisyUser_config.json``.
 
 Further details about the config parameters can be found in `main/configs`. 
-The provided config files use the pre-computed data (downloaded at the previous step). For creating the required data from scratch see **Running Data Preprocessing Steps** below. We also included the trained models for our main experiments in the provided data folder.
+The provided config files use the pre-computed data (downloaded at the previous step). For creating the required data from scratch see **Running Data Preprocessing Steps** below. We also included the trained models for our main experiments in the provided data folder. Training on a Quadro RTX 8000 GPU required around 1.5 hours per epoch (trained for 10 epochs).
 
 Evaluating CONQUER
 ------
@@ -79,11 +79,13 @@ Execute in the `main` directory:
 
 where ``REFTYPE`` can either be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor, ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively.
 
+Evaluating CONQUER is fast! It requires around 20 mins per model on a Quadro RTX 8000 GPU, slightly longer on CPU.
+
 The produced output file consists of the following elements:
 ```
-CONV_ID,QUESTION,ANSWER,GOLD_ANSWER,PRECISION@1, HITS@5, MRR
+CONV_ID,QUESTION,ANSWER,GOLD_ANSWER,PRECISION@1, HIT@5, MRR
 ```
-where ``CONV_ID`` is the respective id of the question in the dataset, followed by the user question, the system answer, the gold labeled answers from the dataset (small answer set, typicially one) and the three metrics P@1, Hits@5 and MRR. 
+where ``CONV_ID`` is the respective id of the question in the dataset, followed by the user question, the system answer, the gold labeled answers from the dataset (small answer set, typicially one) and the three metrics P@1, Hit@5 and MRR. 
 The question id is formated in the following way ``X-Y-Z``, where ``X`` is the number of the conversation, ``Y`` is the turn number and ``Z`` is the reformulation number (only present in case of a reformulation).
 Here is an example output line: 
 ```
@@ -107,7 +109,7 @@ Execute in the `reformulation_prediction` directory:
 ```
    python finetuneRefPredictor.py
 ```
-Note that we also provide the fine-tuned models in the data folder. 
+Fine-tuning required around 30 minutes on a Quadro RTX 8000 GPU for one epoch. Note that we also provide the fine-tuned models in the data folder. 
 
 3. Evaluate the performance of the reformulation predictor:
 ```
