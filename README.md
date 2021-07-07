@@ -97,11 +97,13 @@ Here is an example output line:
 At the end of the file, a summary with the average results on the three metrics, as well as further stats like the 
 *total number of reformulations triggered* and the *number of questions answered correctly on the ith attempt* is provided.
 
+You can also find the results of the main experiments among the provided data.
+
 Training & Evaluating Reformulation Predictor
 -------
 Execute in the `reformulation_prediction` directory:
 
-1. The required data for fine-tuning BERT for reformulation prediction is part of the provided data folder (see download above). Alternatively, it can be created with the following script:
+1. The required data for fine-tuning BERT for reformulation prediction is part of the provided data folder. Alternatively, it can be created with the following script:
 
 ```python
    python createRefDataset.py 
@@ -132,7 +134,7 @@ For running the **Context Entity Detection** (see next step), we need to access 
 This database can be set up in the following way:
 1. For using neo4j, JDK 11 or higher is required and can be downloaded from here: https://jdk.java.net/.
 
-2. We used the neo4j-community-4.0.5 version in our experiments. The latest versions of neo4j can be downloaded from here: https://neo4j.com/download-center/#community
+2. We used the neo4j-community-4.0.5 version in our experiments. The latest versions of neo4j can be downloaded from here: https://neo4j.com/download-center/#community.
 
 3. We are using the *apoc* library that provides additional functionality to neo4j. In newer versions of neo4j you can find the respective jar file inside the ``labs`` folder of the downloaded neo4j directory. Otherwise, you can download a compatible version here: https://neo4j.com/labs/apoc/4.1/installation/.
 Move the apoc jar file (from ``labs``) to ``plugins`` and include the following line in ``configs/neo4j.conf``: ``dbms.security.procedures.unrestricted=apoc.*`` to be able to use the library. 
@@ -141,11 +143,11 @@ Move the apoc jar file (from ``labs``) to ``plugins`` and include the following 
 
    a) You can find the required KG dumps here:  https://conquer.mpi-inf.mpg.de/static/dumps.zip. Unzip and put them into the ``data`` folder (the total size of the dumps is around 80 GB). Alternatively, you can build our KG representation from scratch (see **Running KG Preparation Steps** below).
 
-   b) Execute in the ``kg_processing`` directory:
+   b) Execute in the ``kg_processing`` directory (after setting the corresponding paths to the neo4j database and the JDK):
 ```
    bash loadKGIntoNeo4j.sh
 ```
-The final database requires around 65 GB of disk space and around 30 GB of RAM is necessary to run the database.
+The size of the final database is around 200 GB and it requires around 30 GB of RAM to run the database.
 
 5.  The database can be started with the following command:
 
@@ -159,7 +161,7 @@ where $NEO4J_HOME is the path to the downloaded neo4j directory.
 ```
    $NEO4J_HOME/bin/cypher-shell
 ```
-and type in the defaults: *user: neo4j*, *password: neo4j*, then you are prompted to type in a new password. Restart the database (`` $NEO4J_HOME/bin/neo4j stop`` and then again `` $NEO4J_HOME/bin/neo4j start``).
+and type in the defaults: *user: neo4j*, *password: neo4j*, then you are prompted to type in a new password. Restart the database (``$NEO4J_HOME/bin/neo4j stop`` and then again ``$NEO4J_HOME/bin/neo4j start``).
 
 OPTIONAL: Running Context Entity Detection
 ------
@@ -169,13 +171,13 @@ The context entities (= startpoints for the RL walk) along with their respective
 ```
    git clone https://github.com/facebookresearch/BLINK.git
 ```  
-   Place the BLINK directory inside the root directory of CONQUER and perform the setup steps described here: https://github.com/facebookresearch/BLINK/tree/master/elq
+   Place the BLINK directory inside the root directory of CONQUER and perform the setup steps described here: https://github.com/facebookresearch/BLINK/tree/master/elq.
 
 
 2. Access to our KG, which has been loaded into a neo4j database, is required. 
 Perform the steps described in **Running the Neo4j Database** above for this.
 
-3. Once the database is running, execute the following commands in the `context_entity_detection` directory:
+3. Once the database is running, set your neo4j password in ``context_entity_detection/neo4jDatabaseConnection.py`` and execute the following commands in the `context_entity_detection` directory:
 
 ```
    mkdir models/
@@ -236,7 +238,7 @@ Our wikidata processing pipeline is located in a separate project. Clone it into
 
 3. In order to get the CONQUER specific KG representations (where the qualifier information is added to the paths of the main fact and vice versa), execute inside the ``kg_processing`` directory:
 ```
-   bash createQualifierDumpRepresentation.sh
+   bash createConquerKGRepresentation.sh
 ```
 
 4. Finally, we need to load the CONQUER KG into the neo4j database for later access as described in **Running the Neo4j Database** above.
