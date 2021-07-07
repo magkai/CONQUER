@@ -38,6 +38,8 @@ The following software is required:
 
 * Tensorflow 2.20
 
+* Tensorflow Probability 0.10.1
+
 * Transformers 3.5.1
 
 * TF-Agents 0.5.0
@@ -50,12 +52,13 @@ To install the required libraries, it is recommended to create a virtual environ
 
     python3 -m venv ENV_conquer
     source ENV_conquer/bin/activate
+    pip install --upgrade pip
     pip install -r requirements.txt
 
 
 Data
 ------
-The benchmark, all required intermediate data and our main results can be downloaded from here (unzip and put it in the root folder of the cloned github repo, around 11 GB required): https://conquer.mpi-inf.mpg.de/static/data.zip 
+The benchmark, all required intermediate data and our main results can be downloaded from here (unzip and put it in the root folder of the cloned github repo; total data size around 20 GB): https://conquer.mpi-inf.mpg.de/static/data.zip 
 
         
 
@@ -79,7 +82,7 @@ Execute in the `main` directory:
 
 where ``REFTYPE`` can either be *idealRef* or *noisyRef* to select the ideal/noisy reformulation predictor, ``USERTYPE`` can either be *idealUser* or *noisyUser* to apply the ideal/noisy user model respectively.
 
-Evaluating CONQUER is fast! It requires around 20 mins per model on a Quadro RTX 8000 GPU, slightly longer on CPU.
+Evaluating CONQUER is fast! It requires around 20 mins per model on a Quadro RTX 8000 GPU.
 
 The produced output file consists of the following elements:
 ```
@@ -134,9 +137,9 @@ This database can be set up in the following way:
 3. We are using the *apoc* library that provides additional functionality to neo4j. In newer versions of neo4j you can find the respective jar file inside the ``labs`` folder of the downloaded neo4j directory. Otherwise, you can download a compatible version here: https://neo4j.com/labs/apoc/4.1/installation/.
 Move the apoc jar file (from ``labs``) to ``plugins`` and include the following line in ``configs/neo4j.conf``: ``dbms.security.procedures.unrestricted=apoc.*`` to be able to use the library. 
 
-4. Load the CONQUER KG representation into the neo4j database. 
+4. Load the CONQUER KG representation into the neo4j database:
 
-   a) You can find the required KG dumps here:  https://conquer.mpi-inf.mpg.de/static/dumps.zip. Unzip and put them into the ``data`` folder. Alternatively, you can build our KG representation from scratch (see **Running KG Preparation Steps** below).
+   a) You can find the required KG dumps here:  https://conquer.mpi-inf.mpg.de/static/dumps.zip. Unzip and put them into the ``data`` folder (the total size of the dumps is around 80 GB). Alternatively, you can build our KG representation from scratch (see **Running KG Preparation Steps** below).
 
    b) Execute in the ``kg_processing`` directory:
 ```
@@ -219,7 +222,7 @@ OPTIONAL: Running KG Preparation Steps
 
 1. In this project, we use Wikidata as our Knowledge Graph. You can download the most recent wikidata dump here (around 2 TB): https://dumps.wikimedia.org/wikidatawiki/entities/
 
-2. Our goal was to make the dump most suitable for QA by performing a sequence of filtering steps, which results in a much smaller dump (around 42 GB). 
+2. Our goal was to make the dump most suitable for QA by performing a sequence of filtering steps, which results in a much smaller dump (around 43 GB). 
 Our wikidata processing pipeline is located in a separate project. Clone it into the ``kg_processing`` directory of CONQUER:
 ```
    git clone https://github.com/PhilippChr/wikidata-core-for-QA.git

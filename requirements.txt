@@ -1,6 +1,7 @@
 spacy==2.1.6
 numpy==1.20.1
 tensorflow==2.2.0
+tensorflow-probability==0.10.1
 transformers==3.5.1
 tf-agents==0.5.0
 neo4j==1.7.2
