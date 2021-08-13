@@ -21,12 +21,19 @@ def splitNodes():
                 while line:
                     item = line
                     line = fp_in.readline()
+                    if len(item) <= 2:
+                        print(item)
+                        continue
                     item = item[:-1]
                     if item[0] == "Q": 
                         icount += 1
                         ires += item + "\n"
                     elif item[0] == "\"":
                         lcount += 1
+                        item = item[1:len(item)-2]
+                        if "\"" in item:
+                            item = item.replace("\\\"", '""')
+                        item = "\"" + item + "\"" 
                         lres += item + "\n"
                    
 

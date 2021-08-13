@@ -9,3 +9,5 @@ python retrieveKGNodes.py
 awk -F, '!x[$1]++' ../data/dumps/nodes.csv > ../data/dumps/nodes_unique.csv
 #split nodes into entities and literals
 python splitKGNodes.py
+#clean literals
+python cleanLiterals.py
