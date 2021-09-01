@@ -58,7 +58,7 @@ To install the required libraries, it is recommended to create a virtual environ
 
 Data
 ------
-The benchmark, all required intermediate data and our main results can be downloaded from here (unzip and put it in the root folder of the cloned github repo; total data size around 20 GB): https://conquer.mpi-inf.mpg.de/static/data.zip 
+The benchmark, all required intermediate data and our main results can be downloaded from [here](http://qa.mpi-inf.mpg.de/conquer/static/data.zip) (unzip and put it in the root folder of the cloned github repo; total data size around 20 GB).
 
         
 
@@ -141,7 +141,7 @@ Move the apoc jar file (from ``labs``) to ``plugins`` and include the following 
 
 4. Load the CONQUER KG representation into the neo4j database:
 
-   a) You can find the required KG dumps here:  https://conquer.mpi-inf.mpg.de/static/dumps.zip. Unzip and put them into the ``data`` folder (the total size of the dumps is around 80 GB). Alternatively, you can build our KG representation from scratch (see **Running KG Preparation Steps** below).
+   a) You can find the required KG dumps [here](http://qa.mpi-inf.mpg.de/conquer/static/dumps.zip). Unzip and put them into the ``data`` folder (the total size of the dumps is around 80 GB). Alternatively, you can build our KG representation from scratch (see **Running KG Preparation Steps** below).
 
    b) Execute in the ``kg_processing`` directory (after setting the corresponding paths to the neo4j database and the JDK):
 ```
