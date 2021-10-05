@@ -28,6 +28,7 @@ If you use this code, please cite:
 Setup 
 ------
 
+All code was tested on Linux only. 
 The following software is required:
 
 * Python 3.7
@@ -60,6 +61,19 @@ Data
 ------
 The benchmark, all required intermediate data and our main results can be downloaded from [here](http://qa.mpi-inf.mpg.de/conquer/static/data.zip) (unzip and put it in the root folder of the cloned github repo; total data size around 20 GB).
 
+**Benchmark Data**
+
+Our benchmark is available among the downloaded data above (it will be located at `data/ConvRef/ConvRef_TYPE.json`), where ``TYPE`` can either be *trainset*, *devset*, or *testset*. 
+If you only want to load the benchmark, you can also directly get it from here:
+[Trainset](http://qa.mpi-inf.mpg.de/conquer/static/data/ConvRef/ConvRef_train.zip),
+[Devset](http://qa.mpi-inf.mpg.de/conquer/static/data/ConvRef/ConvRef_dev.zip),
+[Testset](http://qa.mpi-inf.mpg.de/conquer/static/data/ConvRef/ConvRef_test.zip).
+
+The data can be easily processed by executing the `processConvRefData.py` in the `data_preparation` folder. 
+Alternatively, the JSON files can be loaded into a pandas dataframe, by executing the following code:
+
+      import pandas as pd
+      data = pd.read_json('data/ConvRef/ConvRef_TYPE.json')
         
 
 Training CONQUER
