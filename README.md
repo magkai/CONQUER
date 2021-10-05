@@ -69,7 +69,7 @@ If you only want to load the benchmark, you can also directly get it from here:
 [Devset](http://qa.mpi-inf.mpg.de/conquer/static/data/ConvRef/ConvRef_dev.zip),
 [Testset](http://qa.mpi-inf.mpg.de/conquer/static/data/ConvRef/ConvRef_test.zip).
 
-The data can be easily processed by executing the `processConvRefData.py` in the `data_preparation` folder. 
+The data can be easily processed by executing the `processConvRefData.py` file in the `data_preparation` folder. 
 Alternatively, the JSON files can be loaded into a pandas dataframe, by executing the following code:
 
       import pandas as pd
