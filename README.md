@@ -13,7 +13,7 @@ The answering process is modeled as multiple agents walking in parallel on the k
 *KG excerpt required for answering "When was Avengers: Endgame released in Germany?" and "What was the next from Marvel?".
 Agents are shown with possible walk directions. The colored box ("Spider-man: Far from Home") is the correct answer.*
 
-For more details see our paper: [Reinforcement Learning from Reformulations in Conversational Question Answering over Knowledge Graphs](https://arxiv.org/abs/2105.04850) and visit our project website: https://conquer.mpi-inf.mpg.de.
+For more details see our paper: [Reinforcement Learning from Reformulations in Conversational Question Answering over Knowledge Graphs](https://dl.acm.org/doi/10.1145/3404835.3462859) and visit our project website: https://conquer.mpi-inf.mpg.de.
 
 If you use this code, please cite:
 ```bibtex
