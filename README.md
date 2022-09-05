@@ -177,6 +177,12 @@ where $NEO4J_HOME is the path to the downloaded neo4j directory.
 ```
 and type in the defaults: *user: neo4j*, *password: neo4j*, then you are prompted to type in a new password. Restart the database (``$NEO4J_HOME/bin/neo4j stop`` and then again ``$NEO4J_HOME/bin/neo4j start``).
 
+7. We also create an index for efficiency. The following command can be executed from the cypher-shell:
+
+```
+  CREATE INDEX node_index FOR (n:e) ON (n.nodeid);
+```
+
 OPTIONAL: Running Context Entity Detection
 ------
 The context entities (= startpoints for the RL walk) along with their respective KG paths (= actions) have been pre-computed and can directly be used (see **Data** section above) for the RL. In case you want to re-run the context entity detection, the following is required:
